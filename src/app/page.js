@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Search, ChevronRight, Star } from 'lucide-react';
 import { getCameras } from '@/data/cameras';
+import CameraCard from '@/components/CameraCard';
 
 export default async function Home() {
   const cameras = await getCameras();
@@ -57,31 +58,7 @@ export default async function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredCameras.map((camera) => (
-              <Link href={`/cameras/${camera.slug}`} key={camera.id} className="bg-white rounded-3xl p-6 border border-gray-200 hover:border-orange-500/30 shadow-sm hover:shadow-xl transition-all duration-300 hover-lift group">
-                <div className="h-48 flex items-center justify-center mb-6">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={camera.image} alt={camera.name} className="max-h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500" />
-                </div>
-                <div>
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-extrabold text-slate-900 group-hover:text-orange-500 transition-colors">{camera.name}</h3>
-                    <div className="flex items-center gap-1 text-sm font-bold text-gray-700 bg-gray-100 px-2 py-1 rounded-md">
-                      <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" /> 4.8
-                    </div>
-                  </div>
-                  <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">{camera.brand} • {camera.category}</p>
-                  
-                  <div className="pt-4 border-t border-gray-100 flex justify-between items-center">
-                    <div>
-                      <p className="text-xs text-gray-500 font-bold uppercase mb-0.5">Est. Price</p>
-                      <p className="text-lg font-black text-slate-900">₹{camera.price.toLocaleString('en-IN')}</p>
-                    </div>
-                    <button className="bg-slate-900 text-white px-4 py-2 rounded-lg font-bold text-sm group-hover:bg-orange-500 transition-colors">
-                      View Specs
-                    </button>
-                  </div>
-                </div>
-              </Link>
+              <CameraCard key={camera.id} camera={camera} />
             ))}
           </div>
         </div>

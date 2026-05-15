@@ -1,14 +1,19 @@
 import Link from 'next/link';
 import { Search, Menu } from 'lucide-react';
 import Image from 'next/image';
+import { createClient } from '@/utils/supabase/server';
+import UserNav from './UserNav';
 
-export default function Header() {
+export default async function Header() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-sm backdrop-blur-md bg-white/90">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-8">
         {/* Brand Logo */}
-        <Link href="/" className="flex-shrink-0 flex items-center cursor-pointer group hover:opacity-80 transition-opacity">
-          <div className="relative h-12 w-48 sm:h-14 sm:w-56">
+        <Link href="/" className="flex-shrink-0 flex items-center group transition-transform active:scale-95">
+          <div className="relative h-10 w-40 sm:h-12 sm:w-48">
             <Image 
               src="/images/logo.png" 
               alt="Camera-Wale Logo" 
@@ -20,45 +25,37 @@ export default function Header() {
         </Link>
         
         {/* Search Bar (Desktop) */}
-        <div className="flex-1 max-w-2xl px-4 hidden md:block">
+        <div className="flex-1 max-w-xl px-4 hidden md:block">
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Search className="h-4 w-4 text-gray-400 group-hover:text-orange-500 transition-colors" />
+              <Search className="h-4 w-4 text-slate-400 group-focus-within:text-orange-500 transition-colors" />
             </div>
             <input 
               type="text" 
-              className="block w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-full leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 text-sm font-medium" 
+              className="block w-full pl-11 pr-4 py-2.5 border border-slate-200 rounded-2xl leading-5 bg-slate-50/50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all duration-300 text-sm font-medium" 
               placeholder="Search models, e.g., Sony A7 IV..." 
             />
           </div>
         </div>
         
-        {/* Auth Buttons */}
-        <div className="flex items-center gap-4">
-          <Link href="/compare" className="hidden sm:block text-sm font-bold text-gray-600 hover:text-orange-500 transition">
-            Compare Specs
-          </Link>
-          <button className="hidden sm:block text-sm font-semibold text-gray-600 hover:text-gray-900 transition">Log In</button>
-          <button className="bg-slate-900 text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-slate-800 transition shadow-md hover:-translate-y-0.5 duration-200">
-            Sign Up
-          </button>
-          <button className="md:hidden text-gray-500">
+        {/* Navigation & Auth */}
+        <div className="flex items-center gap-6">
+          <nav className="hidden lg:flex items-center gap-6">
+            <Link href="/compare" className="text-sm font-bold text-slate-500 hover:text-orange-500 transition-colors">
+              Compare Engine
+            </Link>
+            <Link href="/cameras" className="text-sm font-bold text-slate-500 hover:text-orange-500 transition-colors">
+              Explore All
+            </Link>
+          </nav>
+          
+          <div className="h-6 w-px bg-slate-100 hidden lg:block mx-2"></div>
+          
+          <UserNav user={user} />
+          
+          <button className="md:hidden p-2 text-slate-500 hover:bg-slate-50 rounded-xl transition-colors">
             <Menu className="w-6 h-6" />
           </button>
-        </div>
-      </div>
-      
-      {/* Mobile Search Bar */}
-      <div className="md:hidden px-4 pb-3 bg-white">
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search className="h-4 w-4 text-gray-400" />
-          </div>
-          <input 
-            type="text" 
-            className="block w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-full bg-gray-50 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm font-medium" 
-            placeholder="Search models..." 
-          />
         </div>
       </div>
     </header>
