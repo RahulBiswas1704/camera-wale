@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
-export async function login(formData) {
+export async function login(prevState, formData) {
   const password = formData.get('password');
   const adminPassword = process.env.ADMIN_PASSWORD;
 
