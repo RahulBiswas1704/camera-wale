@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NullG - Antigravity</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            position: relative;
+            touch-action: none; /* Prevent browser pinch-zoom/scroll so physics dragging works smoothly */
+        }
+
+        /* Physics Elements Class */
+        .matter-body {
+            position: absolute;
+            transform-origin: center;
+            will-change: transform;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden; /* Prevent text blur during rotation */
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+            display: flex !important; 
+            align-items: center;
+            justify-content: center;
+            margin: 0 !important;
+        }
+
+        .matter-body:active {
+            cursor: grabbing;
+        }
+
+        /* Logo styles */
+        #logo-container {
+            font-size: 84px;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: -3px;
+            font-family: "Product Sans", Arial, sans-serif;
+            line-height: 1;
+            padding: 10px;
+        }
+
+        .color-n { color: #4285F4; }
+        .color-u { color: #EA4335; }
+        .color-l1 { color: #FBBC05; }
+        .color-l2 { color: #4285F4; }
+        .color-g { color: #34A853; }
+
+        /* Search bar styles */
+        #search-container {
+            width: 580px;
+            max-width: 90vw;
+            background: #fff;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            padding: 0 24px;
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+            display: flex;
+            align-items: center;
+            height: 48px;
+        }
+
+        #search-container:hover {
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.4);
+        }
+
+        #search-input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: transparent;
+            cursor: text;
+            user-select: text;
+            -webkit-user-select: text;
+            color: rgba(0,0,0,.87);
+        }
+
+        /* Buttons styles */
+        #buttons-container {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+            border-radius: 4px;
+            color: #3c4043;
+            font-family: arial,sans-serif;
+            font-size: 14px;
+            padding: 0 16px;
+            line-height: 36px;
+            height: 36px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .btn:hover {
+            box-shadow: 0 1px 1px rgba(0,0,0,.1);
+            background-color: #f8f9fa;
+            border: 1px solid #dadce0;
+            color: #202124;
+        }
+
+        /* Links styles */
+        .link {
+            color: #70757a;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 5px 10px;
+            font-family: arial,sans-serif;
+            display: inline-block;
+            line-height: 1;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Layout Wrapper (Initial Static Layout) */
+        .layout-wrapper {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+        
+        #top-links {
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px 20px;
+            gap: 10px;
+        }
+
+        #bottom-links {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: #f2f2f2;
+            border-top: 1px solid #dadce0;
+            margin-top: auto;
+        }
+        
+        #bottom-links .left, #bottom-links .right {
+            display: flex;
+            gap: 15px;
+        }
+
+        #center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            margin-top: -10vh; /* Shift slightly up for authentic layout */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="layout-wrapper" id="layout-wrapper">
+        <div id="top-links">
+            <a href="#" class="link matter-body-target">Images</a>
+            <a href="#" class="link matter-body-target">Settings</a>
+        </div>
+        
+        <div id="center-content">
+            <div id="logo-container" class="matter-body-target">
+                <span class="color-n">N</span><span class="color-u">u</span><span class="color-l1">l</span><span class="color-l2">l</span><span class="color-g">G</span>
+            </div>
+            
+            <div id="search-container" class="matter-body-target">
+                <input type="text" id="search-input" placeholder="Search the void..." autocomplete="off">
+            </div>
+            
+            <div id="buttons-container">
+                <button class="btn matter-body-target">Gravity Search</button>
+                <button class="btn matter-body-target">I'm Feeling Weightless</button>
+            </div>
+        </div>
+
+        <div id="bottom-links" class="bottom-area">
+            <div class="left">
+                <a href="#" class="link matter-body-target">Privacy</a>
+                <a href="#" class="link matter-body-target">Terms</a>
+            </div>
+            <div class="right">
+                <a href="#" class="link matter-body-target">Settings</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Matter.js Physics Engine via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script>
+        // Trigger sequence on load
+        window.addEventListener('load', () => {
+            // Provide a 600ms delay so the user clearly sees the static layout before the "drop"
+            setTimeout(initAntigravity, 600); 
+        });
+
+        function initAntigravity() {
+            // Matter.js Module Aliases
+            const Engine = Matter.Engine,
+                  Runner = Matter.Runner,
+                  Bodies = Matter.Bodies,
+                  Composite = Matter.Composite,
+                  Mouse = Matter.Mouse,
+                  MouseConstraint = Matter.MouseConstraint,
+                  Events = Matter.Events;
+
+            const engine = Engine.create();
+            
+            // Phase 2 Requirement: Absolute Zero Gravity
+            engine.gravity.y = 0;
+            engine.gravity.x = 0;
+
+            const world = engine.world;
+
+            let width = window.innerWidth;
+            let height = window.innerHeight;
+
+            // Define Invisible Boundary Walls
+            let walls = [];
+            const wallThickness = 100;
+            const createWalls = () => {
+                const options = { isStatic: true, restitution: 0.9, friction: 0.1 };
+                walls = [
+                    Bodies.rectangle(width / 2, -wallThickness / 2, width + wallThickness * 2, wallThickness, options), // Top
+                    Bodies.rectangle(width / 2, height + wallThickness / 2, width + wallThickness * 2, wallThickness, options), // Bottom
+                    Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, height + wallThickness * 2, options), // Left
+                    Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height + wallThickness * 2, options) // Right
+                ];
+                Composite.add(world, walls);
+            };
+            createWalls();
+
+            const targets = Array.from(document.querySelectorAll('.matter-body-target'));
+            const domBodies = [];
+            const bodyRects = [];
+            
+            // Capture exact layout bounding boxes
+            targets.forEach((el) => {
+                const rect = el.getBoundingClientRect();
+                bodyRects.push({ el, rect });
+            });
+
+            // Turn captured elements into physics bodies
+            bodyRects.forEach(({ el, rect }) => {
+                let radius = 0;
+                // Add chamfer (rounded corners) for collisions matching the visual borders
+                if (el.id === 'search-container') radius = 24;
+                else if (el.classList.contains('btn')) radius = 4;
+
+                const bodyOptions = {
+                    restitution: 0.8, // Bounciness
+                    frictionAir: 0.005, // Retains momentum nicely
+                    friction: 0.1,
+                    density: 0.001
+                };
+
+                if (radius > 0) {
+                    bodyOptions.chamfer = { radius: radius };
+                }
+
+                const w = rect.width;
+                const h = rect.height;
+                const cx = rect.left + w / 2;
+                const cy = rect.top + h / 2;
+
+                const body = Bodies.rectangle(cx, cy, w, h, bodyOptions);
+
+                // Initial Random "Drift" (Velocity & Torque)
+                Matter.Body.setVelocity(body, {
+                    x: (Math.random() - 0.5) * 6,
+                    y: (Math.random() - 0.5) * 6
+                });
+                Matter.Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.04);
+
+                Composite.add(world, body);
+
+                // Re-parent elements directly to the body to remove them from document flow
+                document.body.appendChild(el);
+                
+                el.classList.add('matter-body');
+                el.classList.remove('matter-body-target');
+                
+                // Explicitly define dimensions to lock aspect prior to simulation override
+                el.style.left = '0px';
+                el.style.top = '0px';
+                el.style.width = w + 'px';
+                el.style.height = h + 'px';
+
+                domBodies.push({
+                    el: el,
+                    body: body,
+                    width: w,
+                    height: h
+                });
+            });
+
+            // Hide initial structured layout containers
+            const layoutWrapper = document.getElementById('layout-wrapper');
+            if (layoutWrapper) {
+                layoutWrapper.style.display = 'none';
+            }
+
+            // Game Loop: Sync DOM elements to Matter.js bodies
+            Events.on(engine, 'afterUpdate', function() {
+                domBodies.forEach((domBody) => {
+                    const body = domBody.body;
+                    const el = domBody.el;
+                    // Translate center vectors to top-left CSS values
+                    const px = body.position.x - domBody.width / 2;
+                    const py = body.position.y - domBody.height / 2;
+                    
+                    // Hardware accelerated composite transforms
+                    el.style.transform = `translate(${px}px, ${py}px) rotate(${body.angle}rad)`;
+                });
+            });
+
+            // Phase 3: Mouse Interactivity
+            const mouse = Mouse.create(document.body);
+            const mouseConstraint = MouseConstraint.create(engine, {
+                mouse: mouse,
+                constraint: {
+                    stiffness: 0.2,
+                    render: { visible: false }
+                }
+            });
+            Composite.add(world, mouseConstraint);
+
+            // Phase 4: Typable Search Bar Logic
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                // Prevent Matter.js from capturing input clicks so you can type while it floats!
+                searchInput.addEventListener('mousedown', (e) => e.stopPropagation());
+                searchInput.addEventListener('touchstart', (e) => e.stopPropagation());
+            }
+
+            // Cleanup default browser scroll interactions
+            mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
+            mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel);
+
+            // Run the simulation
+            const runner = Runner.create();
+            Runner.run(runner, engine);
+
+            // Dynamically recalculate boundary walls on window resize
+            window.addEventListener('resize', () => {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                Composite.remove(world, walls);
+                createWalls();
+            });
+        }
+    </script>
+</body>
+</html>

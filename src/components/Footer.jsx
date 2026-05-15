@@ -1,0 +1,32 @@
+import Link from 'next/link';
+import Image from 'next/image';
+
+export default function Footer() {
+  return (
+    <footer className="bg-slate-900 text-white py-12 mt-20 border-t border-slate-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center justify-center gap-2 relative h-12 w-48">
+            <Image 
+              src="/images/logo.png" 
+              alt="Camera-Wale Logo" 
+              fill 
+              style={{ objectFit: 'contain', objectPosition: 'left' }}
+              className="brightness-0 invert" /* Make the logo white for the dark footer */
+            />
+          </div>
+          
+          <div className="flex gap-6 text-sm font-semibold text-gray-400">
+            <Link href="/" className="hover:text-white transition">Home</Link>
+            <Link href="/compare" className="hover:text-white transition">Compare</Link>
+            <a href="#" className="hover:text-white transition">About Us</a>
+            <a href="#" className="hover:text-white transition">Privacy Policy</a>
+          </div>
+        </div>
+        <div className="mt-8 text-center text-gray-500 text-sm font-medium border-t border-slate-800 pt-8">
+          © 2026 Camera-Wale. Compare. Decide. Shoot.
+        </div>
+      </div>
+    </footer>
+  );
+}
