@@ -10,11 +10,11 @@ export default async function Header() {
   const { data: { user } } = await supabase.auth.getUser();
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-sm backdrop-blur-md bg-white/90">
+    <header className="sticky top-0 z-50 glass border-b border-gray-200/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-8">
         {/* Brand Logo */}
         <Link href="/" className="flex-shrink-0 flex items-center group transition-transform active:scale-95">
-          <div className="relative h-10 w-40 sm:h-12 sm:w-48">
+          <div className="relative h-12 w-48 sm:h-14 sm:w-56">
             <Image 
               src="/images/logo.png" 
               alt="Camera-Wale Logo" 

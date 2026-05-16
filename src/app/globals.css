@@ -1,23 +1,47 @@
 @import "tailwindcss";
 
 @theme {
-  --color-accent: #f97316;
-  --color-dark: #0f172a;
+  --color-accent: #e63946;
+  --color-dark: #111827;
+  
+  /* Override Tailwind's default orange palette with the new logo's red-orange */
+  --color-orange-50: #fdf2f2;
+  --color-orange-100: #fbe5e5;
+  --color-orange-200: #f7cccc;
+  --color-orange-300: #f2a6a6;
+  --color-orange-400: #ec7373;
+  --color-orange-500: #e63946; /* The core logo red */
+  --color-orange-600: #d90429;
+  --color-orange-700: #b90323;
+  --color-orange-800: #99021d;
+  --color-orange-900: #7a0217;
 }
 
 @layer utilities {
   .hover-lift {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }
   .hover-lift:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 25px -5px rgba(230, 57, 70, 0.15), 0 8px 10px -6px rgba(230, 57, 70, 0.1);
   }
   .row-hover:hover {
     background-color: #f8fafc;
   }
   .mockup-img {
     mix-blend-mode: multiply;
+  }
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  .glass-dark {
+    background: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
   }
 }
 

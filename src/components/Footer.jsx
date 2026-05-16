@@ -3,16 +3,15 @@ import Image from 'next/image';
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-900 text-white py-12 mt-20 border-t border-slate-800">
+    <footer className="bg-slate-950 text-white py-12 mt-20 border-t-4 border-orange-500">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center justify-center gap-2 relative h-12 w-48">
+          <div className="flex items-center justify-center gap-2 relative h-16 w-56 bg-white rounded-xl px-2">
             <Image 
               src="/images/logo.png" 
               alt="Camera-Wale Logo" 
               fill 
-              style={{ objectFit: 'contain', objectPosition: 'left' }}
-              className="brightness-0 invert" /* Make the logo white for the dark footer */
+              style={{ objectFit: 'contain', objectPosition: 'center' }}
             />
           </div>
           

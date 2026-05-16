@@ -4,7 +4,7 @@ import FavoriteButton from './FavoriteButton'
 
 export default function CameraCard({ camera }) {
   return (
-    <div className="bg-white rounded-3xl p-6 border border-slate-100 hover:border-orange-500/30 shadow-sm hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-500 hover:-translate-y-2 group relative">
+    <div className="bg-white rounded-3xl p-6 border border-slate-100 hover:border-orange-500/50 shadow-sm hover:shadow-2xl hover:shadow-orange-600/20 transition-all duration-500 hover:-translate-y-2 group relative">
       <FavoriteButton cameraId={camera.id} isFavorited={camera.isFavorited} />
       
       <Link href={`/cameras/${camera.slug}`}>

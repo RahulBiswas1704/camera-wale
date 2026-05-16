@@ -11,28 +11,39 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="py-20 md:py-28 bg-white text-center px-4">
-        <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-6">
-          Find your next <span className="text-orange-500">Camera.</span>
-        </h1>
-        <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto mb-12 font-medium">
-          The ultimate ecosystem to explore, compare, and get the lowest prices on professional gear.
-        </p>
+      {/* Cinematic Hero Section */}
+      <section className="relative py-24 md:py-32 bg-slate-950 text-center px-4 overflow-hidden">
+        {/* Glow Effects matching the red logo */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-orange-600/20 blur-[120px] rounded-full pointer-events-none"></div>
+        <div className="absolute top-1/4 right-0 w-64 h-64 bg-orange-500/10 blur-[100px] rounded-full pointer-events-none"></div>
         
-        <SearchForm isHero={true} placeholder="Search by brand, model, or specs (e.g., Sony A7 IV)" />
+        <div className="relative z-10">
+          <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-400 text-sm font-bold tracking-widest uppercase">
+            The Professional Ecosystem
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tight mb-6">
+            Find your next <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600 drop-shadow-sm">Camera.</span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-12 font-medium">
+            Explore, compare, and secure the lowest prices on professional gear. Built by creators, for creators.
+          </p>
+          
+          <div className="max-w-2xl mx-auto mb-12">
+            <SearchForm isHero={true} placeholder="Search by brand, model, or specs (e.g., Sony A7 IV)" />
+          </div>
 
-        {/* Categories */}
-        <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-4">
-          {['Mirrorless', 'DSLR', 'Cinema Cameras', 'Lenses', 'Accessories'].map((cat) => (
-            <Link 
-              key={cat} 
-              href={`/cameras?category=${encodeURIComponent(cat)}`}
-              className="px-6 py-3 bg-gray-50 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 border border-gray-200 rounded-xl font-bold text-gray-700 transition-all hover-lift"
-            >
-              {cat}
-            </Link>
-          ))}
+          {/* Categories */}
+          <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-4">
+            {['Mirrorless', 'DSLR', 'Cinema Cameras', 'Lenses', 'Accessories'].map((cat) => (
+              <Link 
+                key={cat} 
+                href={`/cameras?category=${encodeURIComponent(cat)}`}
+                className="px-6 py-3 bg-white/5 hover:bg-orange-500 hover:text-white border border-white/10 rounded-xl font-bold text-gray-300 transition-all hover-lift glass-dark"
+              >
+                {cat}
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
