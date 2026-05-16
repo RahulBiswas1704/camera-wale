@@ -19,12 +19,22 @@ export default async function CameraDetailPage({ params }) {
     notFound();
   }
 
+  // Unified Specs Access
+  const unifiedSpecs = {
+    sensorSize: camera.sensor_type || camera.specs?.sensorSize || 'N/A',
+    megapixels: camera.megapixels || camera.specs?.megapixels || 'N/A',
+    videoResolution: camera.video_res || camera.specs?.videoResolution || 'N/A',
+    autofocusPoints: camera.specs?.autofocusPoints || 'N/A',
+    batteryLife: camera.specs?.batteryLife || 'N/A',
+    lensMount: camera.lens_mount || camera.specs?.lensMount || 'Standard',
+  };
+
   const specsList = [
-    { label: 'Sensor Size', value: camera.specs.sensorSize, icon: <Maximize className="w-5 h-5 text-gray-400" /> },
-    { label: 'Megapixels', value: `${camera.specs.megapixels} MP`, icon: <Camera className="w-5 h-5 text-gray-400" /> },
-    { label: 'Video', value: camera.specs.videoResolution, icon: <Video className="w-5 h-5 text-gray-400" /> },
-    { label: 'Autofocus', value: `${camera.specs.autofocusPoints} Points`, icon: <Focus className="w-5 h-5 text-gray-400" /> },
-    { label: 'Battery', value: `${camera.specs.batteryLife} Shots`, icon: <Battery className="w-5 h-5 text-gray-400" /> },
+    { label: 'Sensor Size', value: unifiedSpecs.sensorSize, icon: <Maximize className="w-5 h-5 text-gray-400" /> },
+    { label: 'Megapixels', value: `${unifiedSpecs.megapixels} MP`, icon: <Camera className="w-5 h-5 text-gray-400" /> },
+    { label: 'Video', value: unifiedSpecs.videoResolution, icon: <Video className="w-5 h-5 text-gray-400" /> },
+    { label: 'Autofocus', value: unifiedSpecs.autofocusPoints !== 'N/A' ? `${unifiedSpecs.autofocusPoints} Points` : 'N/A', icon: <Focus className="w-5 h-5 text-gray-400" /> },
+    { label: 'Battery', value: unifiedSpecs.batteryLife !== 'N/A' ? `${unifiedSpecs.batteryLife} Shots` : 'N/A', icon: <Battery className="w-5 h-5 text-gray-400" /> },
   ];
 
   return (
@@ -58,7 +68,7 @@ export default async function CameraDetailPage({ params }) {
             <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-6">{camera.name}</h1>
             
             <p className="text-gray-500 text-lg mb-8 leading-relaxed">
-              The {camera.name} is a powerful {camera.category.toLowerCase()} camera designed for professional creators, offering exceptional performance with its {camera.specs.megapixels} MP sensor.
+              The {camera.name} is a powerful {camera.category.toLowerCase()} camera designed for professional creators, offering exceptional performance with its {unifiedSpecs.megapixels} MP sensor.
             </p>
 
             {/* Pricing Box */}

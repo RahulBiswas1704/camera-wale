@@ -22,9 +22,10 @@ export default async function CamerasPage({ searchParams }) {
 
     if (q) {
       matchesQuery = 
-        camera.name.toLowerCase().includes(q) || 
-        camera.brand.toLowerCase().includes(q) ||
-        camera.specs.megapixels.toString().includes(q);
+        camera.name?.toLowerCase().includes(q) || 
+        camera.brand?.toLowerCase().includes(q) ||
+        camera.megapixels?.toString().includes(q) ||
+        camera.sensor_type?.toLowerCase().includes(q);
     }
 
     if (category) {
