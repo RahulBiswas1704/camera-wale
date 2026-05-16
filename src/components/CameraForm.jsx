@@ -4,7 +4,7 @@ import { saveCamera } from '@/app/admin/actions';
 import Link from 'next/link';
 import { 
   Camera, Image as ImageIcon, DollarSign, ListChecks, 
-  BarChart3, Youtube, Layers, Trash2, Plus 
+  BarChart3, Video, Layers, Trash2, Plus 
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -150,7 +150,7 @@ export default function CameraForm({ initialData = null }) {
 
           <div className="space-y-8">
             <h3 className="text-sm font-black text-orange-500 uppercase tracking-[0.2em] flex items-center gap-2">
-              <Youtube className="w-4 h-4" /> External Media
+              <Video className="w-4 h-4" /> External Media
             </h3>
             <div className="space-y-6">
               <div>
