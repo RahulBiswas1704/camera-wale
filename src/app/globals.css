@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  --color-accent: #e63946;
+  --color-accent: #ff4d00;
   --color-dark: #111827;
   
-  /* Override Tailwind's default orange palette with the new logo's red-orange */
-  --color-orange-50: #fdf2f2;
-  --color-orange-100: #fbe5e5;
-  --color-orange-200: #f7cccc;
-  --color-orange-300: #f2a6a6;
-  --color-orange-400: #ec7373;
-  --color-orange-500: #e63946; /* The core logo red */
-  --color-orange-600: #d90429;
-  --color-orange-700: #b90323;
-  --color-orange-800: #99021d;
-  --color-orange-900: #7a0217;
+  /* Override Tailwind's default orange palette with the new logo's vibrant orange */
+  --color-orange-50: #fff7ed;
+  --color-orange-100: #ffedd5;
+  --color-orange-200: #fed7aa;
+  --color-orange-300: #fdba74;
+  --color-orange-400: #fb923c;
+  --color-orange-500: #ff4d00; /* Core Brand Orange */
+  --color-orange-600: #ea580c;
+  --color-orange-700: #c2410c;
+  --color-orange-800: #9a3412;
+  --color-orange-900: #7c2d12;
 }
 
 @layer utilities {

@@ -14,7 +14,7 @@ export default async function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-8">
         {/* Brand Logo */}
         <Link href="/" className="flex-shrink-0 flex items-center group transition-transform active:scale-95">
-          <div className="relative h-12 w-48 sm:h-14 sm:w-56">
+          <div className="relative h-14 w-56 sm:h-20 sm:w-80">
             <Image 
               src="/images/logo.png" 
               alt="Camera-Wale Logo" 

@@ -44,8 +44,20 @@ export async function saveCamera(formData) {
   const rawBadges = formData.get('badges');
   const badges = rawBadges ? rawBadges.split(',').map((b) => b.trim()).filter(b => b) : [];
 
+  const rawGallery = formData.get('gallery');
+  const gallery = rawGallery ? rawGallery.split(',').map((b) => b.trim()).filter(b => b) : [];
+
+  const rawPros = formData.get('pros');
+  const pros = rawPros ? rawPros.split(',').map((b) => b.trim()).filter(b => b) : [];
+
+  const rawCons = formData.get('cons');
+  const cons = rawCons ? rawCons.split(',').map((b) => b.trim()).filter(b => b) : [];
+
+  const rawSamples = formData.get('sample_images');
+  const sample_images = rawSamples ? rawSamples.split(',').map((b) => b.trim()).filter(b => b) : [];
+
   const cameraData = {
-    id: formData.get('id') || formData.get('slug'), // Fallback to slug if new
+    id: formData.get('id') || formData.get('slug'),
     name: formData.get('name'),
     brand: formData.get('brand'),
     category: formData.get('category'),
@@ -55,13 +67,27 @@ export async function saveCamera(formData) {
     amazon_price: parseFloat(formData.get('amazon_price')) || null,
     flipkart_price: parseFloat(formData.get('flipkart_price')) || null,
     badges: badges,
-    specs: {
-      sensorSize: formData.get('sensorSize'),
-      megapixels: parseFloat(formData.get('megapixels')),
-      videoResolution: formData.get('videoResolution'),
-      autofocusPoints: parseInt(formData.get('autofocusPoints'), 10),
-      batteryLife: parseInt(formData.get('batteryLife'), 10),
-    }
+    
+    // Top-level spec columns
+    megapixels: parseFloat(formData.get('megapixels')),
+    sensor_type: formData.get('sensor_type'),
+    video_res: formData.get('video_res'),
+    lens_mount: formData.get('lens_mount'),
+    
+    // Enriched fields
+    gallery: gallery,
+    pros: pros,
+    cons: cons,
+    sample_images: sample_images,
+    youtube_url: formData.get('youtube_url'),
+    feature_ratings: {
+      video: parseFloat(formData.get('rating_video')) || 8.0,
+      stills: parseFloat(formData.get('rating_stills')) || 8.0,
+      autofocus: parseFloat(formData.get('rating_autofocus')) || 8.0,
+      build: parseFloat(formData.get('rating_build')) || 8.0,
+      battery: parseFloat(formData.get('rating_battery')) || 8.0,
+    },
+    specs: {} // Keep empty for now as we moved everything to columns
   };
 
   const { error } = await supabaseAdmin.from('cameras').upsert(cameraData);
@@ -73,6 +99,8 @@ export async function saveCamera(formData) {
 
   revalidatePath('/');
   revalidatePath('/admin');
+  revalidatePath('/cameras');
+  revalidatePath(`/cameras/${cameraData.slug}`);
   revalidatePath('/compare');
   redirect('/admin');
 }
