@@ -1,14 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ChevronDown, CheckCircle2 } from 'lucide-react';
 
-export default function CompareTool({ cameras }) {
-  const [cam1Id, setCam1Id] = useState(cameras[0].id);
-  const [cam2Id, setCam2Id] = useState(cameras[1].id);
+export default function CompareTool({ cameras, initialCam1Slug, initialCam2Slug }) {
+  const router = useRouter();
 
-  const cam1 = cameras.find((c) => c.id === cam1Id);
-  const cam2 = cameras.find((c) => c.id === cam2Id);
+  // Find cameras by slug, or fallback to first two
+  const cam1 = cameras.find((c) => c.slug === initialCam1Slug) || cameras[0];
+  const cam2 = cameras.find((c) => c.slug === initialCam2Slug) || cameras[1];
+
+  const handleCompareChange = (c1Slug, c2Slug) => {
+    // Prevent comparing the exact same camera if possible, or just allow it
+    router.push(`/compare/${c1Slug}-vs-${c2Slug}`);
+  };
 
   // Helper to determine the winner (simple logic for MVP)
   const isWinner = (spec, val1, val2) => {
@@ -30,11 +35,11 @@ export default function CompareTool({ cameras }) {
         <div className="w-full md:w-80 relative group hover-lift">
           <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1 text-left px-1">Select Camera 1</label>
           <select 
-            value={cam1Id}
-            onChange={(e) => setCam1Id(e.target.value)}
+            value={cam1.slug}
+            onChange={(e) => handleCompareChange(e.target.value, cam2.slug)}
             className="w-full appearance-none bg-white border-2 border-gray-200 text-gray-900 py-3.5 px-4 pr-10 rounded-xl font-bold focus:outline-none focus:border-orange-500 focus:ring-0 cursor-pointer hover:border-gray-300 transition-colors shadow-sm"
           >
-            {cameras.map(c => <option key={`c1-${c.id}`} value={c.id}>{c.name}</option>)}
+            {cameras.map(c => <option key={`c1-${c.slug}`} value={c.slug}>{c.name}</option>)}
           </select>
           <div className="pointer-events-none absolute bottom-0 right-0 flex items-center px-4 pb-4 text-gray-400 group-hover:text-orange-500 transition-colors">
             <ChevronDown className="h-5 w-5" />
@@ -46,11 +51,11 @@ export default function CompareTool({ cameras }) {
         <div className="w-full md:w-80 relative group hover-lift">
           <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1 text-left px-1">Select Camera 2</label>
           <select 
-            value={cam2Id}
-            onChange={(e) => setCam2Id(e.target.value)}
+            value={cam2.slug}
+            onChange={(e) => handleCompareChange(cam1.slug, e.target.value)}
             className="w-full appearance-none bg-white border-2 border-gray-200 text-gray-900 py-3.5 px-4 pr-10 rounded-xl font-bold focus:outline-none focus:border-orange-500 focus:ring-0 cursor-pointer hover:border-gray-300 transition-colors shadow-sm"
           >
-            {cameras.map(c => <option key={`c2-${c.id}`} value={c.id}>{c.name}</option>)}
+            {cameras.map(c => <option key={`c2-${c.slug}`} value={c.slug}>{c.name}</option>)}
           </select>
           <div className="pointer-events-none absolute bottom-0 right-0 flex items-center px-4 pb-4 text-gray-400 group-hover:text-orange-500 transition-colors">
             <ChevronDown className="h-5 w-5" />
