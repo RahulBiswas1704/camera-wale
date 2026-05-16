@@ -12,6 +12,12 @@ export async function login(prevState, formData) {
   const targetId = process.env.ADMIN_ID?.trim();
   const targetPassword = process.env.ADMIN_PASSWORD?.trim();
 
+  console.log('Login attempt:', { 
+    idMatch: adminId === targetId, 
+    passMatch: password === targetPassword,
+    envLoaded: !!(targetId && targetPassword)
+  });
+
   if (adminId === targetId && password === targetPassword) {
     // Set a secure httpOnly cookie
     (await cookies()).set('admin_session', 'authenticated', {
