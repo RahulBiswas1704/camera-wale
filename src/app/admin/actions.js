@@ -6,11 +6,11 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 export async function login(prevState, formData) {
-  const adminId = formData.get('adminId');
-  const password = formData.get('password');
+  const adminId = formData.get('adminId')?.toString().trim();
+  const password = formData.get('password')?.toString().trim();
   
-  const targetId = process.env.ADMIN_ID;
-  const targetPassword = process.env.ADMIN_PASSWORD;
+  const targetId = process.env.ADMIN_ID?.trim();
+  const targetPassword = process.env.ADMIN_PASSWORD?.trim();
 
   if (adminId === targetId && password === targetPassword) {
     // Set a secure httpOnly cookie
