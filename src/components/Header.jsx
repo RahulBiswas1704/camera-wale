@@ -39,6 +39,9 @@ export default async function Header() {
             <Link href="/cameras" className="text-sm font-bold text-slate-500 hover:text-orange-500 transition-colors">
               Explore All
             </Link>
+            <Link href="/marketplace" className="text-sm font-bold text-slate-500 hover:text-orange-500 transition-colors flex items-center gap-1">
+              Marketplace <span className="bg-orange-100 text-orange-600 px-1.5 py-0.5 rounded text-[10px] uppercase font-black tracking-wider">New</span>
+            </Link>
           </nav>
           
           <div className="h-6 w-px bg-slate-100 hidden lg:block mx-2"></div>

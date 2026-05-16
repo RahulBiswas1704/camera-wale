@@ -19,8 +19,9 @@ export default function Footer() {
           <div className="flex gap-6 text-sm font-semibold text-gray-400">
             <Link href="/" className="hover:text-white transition">Home</Link>
             <Link href="/compare" className="hover:text-white transition">Compare</Link>
-            <a href="#" className="hover:text-white transition">About Us</a>
-            <a href="#" className="hover:text-white transition">Privacy Policy</a>
+            <Link href="/about" className="hover:text-white transition">About Us</Link>
+            <Link href="/terms" className="hover:text-white transition">Terms</Link>
+            <Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link>
           </div>
         </div>
         <div className="mt-8 text-center text-gray-500 text-sm font-medium border-t border-slate-800 pt-8">

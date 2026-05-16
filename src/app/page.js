@@ -3,6 +3,7 @@ import { ChevronRight, Star } from 'lucide-react';
 import SearchForm from '@/components/SearchForm';
 import { getCameras } from '@/data/cameras';
 import CameraCard from '@/components/CameraCard';
+import Newsletter from '@/components/Newsletter';
 
 export default async function Home() {
   const cameras = await getCameras();
@@ -66,6 +67,9 @@ export default async function Home() {
           </Link>
         </div>
       </section>
+
+      {/* Newsletter Section */}
+      <Newsletter />
     </div>
   );
 }
