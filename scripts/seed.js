@@ -7,7 +7,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 // Use service_role key to bypass RLS policies
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6bHB5cHVsY2tkc2htcGlnZWR1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODg0OTMzNCwiZXhwIjoyMDk0NDI1MzM0fQ.gNYqzbm9Lqjw5uJZ7B3_ObTqK1WlTnSoy-EabFiBIKQ';
+const supabaseAnonKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('Missing Supabase environment variables!');

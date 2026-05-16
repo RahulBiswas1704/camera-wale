@@ -3,6 +3,7 @@ import { Search, Menu } from 'lucide-react';
 import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
 import UserNav from './UserNav';
+import SearchForm from './SearchForm';
 
 export default async function Header() {
   const supabase = await createClient();
@@ -26,16 +27,7 @@ export default async function Header() {
         
         {/* Search Bar (Desktop) */}
         <div className="flex-1 max-w-xl px-4 hidden md:block">
-          <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Search className="h-4 w-4 text-slate-400 group-focus-within:text-orange-500 transition-colors" />
-            </div>
-            <input 
-              type="text" 
-              className="block w-full pl-11 pr-4 py-2.5 border border-slate-200 rounded-2xl leading-5 bg-slate-50/50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all duration-300 text-sm font-medium" 
-              placeholder="Search models, e.g., Sony A7 IV..." 
-            />
-          </div>
+          <SearchForm />
         </div>
         
         {/* Navigation & Auth */}

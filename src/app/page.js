@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Search, ChevronRight, Star } from 'lucide-react';
+import { ChevronRight, Star } from 'lucide-react';
+import SearchForm from '@/components/SearchForm';
 import { getCameras } from '@/data/cameras';
 import CameraCard from '@/components/CameraCard';
 
@@ -18,27 +19,18 @@ export default async function Home() {
           The ultimate ecosystem to explore, compare, and get the lowest prices on professional gear.
         </p>
         
-        {/* Main Search Bar */}
-        <div className="max-w-3xl mx-auto relative group mb-16">
-          <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-            <Search className="h-6 w-6 text-gray-400 group-hover:text-orange-500 transition-colors" />
-          </div>
-          <input 
-            type="text" 
-            className="block w-full pl-16 pr-6 py-5 border-2 border-gray-200 rounded-full leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-300 text-lg font-medium shadow-lg" 
-            placeholder="Search by brand, model, or specs (e.g., Sony A7 IV)" 
-          />
-          <button className="absolute inset-y-2 right-2 bg-slate-900 text-white px-6 py-2 rounded-full font-bold hover:bg-orange-500 transition-colors">
-            Search
-          </button>
-        </div>
+        <SearchForm isHero={true} placeholder="Search by brand, model, or specs (e.g., Sony A7 IV)" />
 
         {/* Categories */}
         <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-4">
           {['Mirrorless', 'DSLR', 'Cinema Cameras', 'Lenses', 'Accessories'].map((cat) => (
-            <button key={cat} className="px-6 py-3 bg-gray-50 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 border border-gray-200 rounded-xl font-bold text-gray-700 transition-all hover-lift">
+            <Link 
+              key={cat} 
+              href={`/cameras?category=${encodeURIComponent(cat)}`}
+              className="px-6 py-3 bg-gray-50 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 border border-gray-200 rounded-xl font-bold text-gray-700 transition-all hover-lift"
+            >
               {cat}
-            </button>
+            </Link>
           ))}
         </div>
       </section>

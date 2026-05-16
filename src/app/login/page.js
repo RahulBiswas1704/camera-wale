@@ -2,7 +2,8 @@ import Link from 'next/link'
 import { login } from '@/app/auth/actions'
 import { Camera, Mail, Lock, ArrowRight } from 'lucide-react'
 
-export default function LoginPage({ searchParams }) {
+export default async function LoginPage({ searchParams }) {
+  const params = await searchParams;
   return (
     <div className="min-h-screen bg-white flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -62,9 +63,9 @@ export default function LoginPage({ searchParams }) {
               </div>
             </div>
 
-            {searchParams?.error && (
+            {params?.error && (
               <div className="p-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm font-bold text-center">
-                {searchParams.error}
+                {params.error}
               </div>
             )}
 

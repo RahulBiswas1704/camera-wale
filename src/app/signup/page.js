@@ -2,7 +2,8 @@ import Link from 'next/link'
 import { signup } from '@/app/auth/actions'
 import { Camera, Mail, Lock, UserPlus } from 'lucide-react'
 
-export default function SignupPage({ searchParams }) {
+export default async function SignupPage({ searchParams }) {
+  const params = await searchParams;
   return (
     <div className="min-h-screen bg-white flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -62,15 +63,15 @@ export default function SignupPage({ searchParams }) {
               </div>
             </div>
 
-            {searchParams?.error && (
+            {params?.error && (
               <div className="p-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm font-bold text-center">
-                {searchParams.error}
+                {params.error}
               </div>
             )}
 
-            {searchParams?.message && (
+            {params?.message && (
               <div className="p-3 rounded-xl bg-green-50 border border-green-100 text-green-600 text-sm font-bold text-center">
-                {searchParams.message}
+                {params.message}
               </div>
             )}
 

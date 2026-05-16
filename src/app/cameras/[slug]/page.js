@@ -1,7 +1,8 @@
 import { getCameraBySlug, getCameras } from '@/data/cameras';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronRight, Camera, Battery, Focus, Video, Maximize } from 'lucide-react';
+import { ChevronRight, Camera, Battery, Focus, Video, Maximize, Star } from 'lucide-react';
+import ReviewForm from '@/components/ReviewForm';
 
 export async function generateStaticParams() {
   const cameras = await getCameras();
@@ -11,7 +12,8 @@ export async function generateStaticParams() {
 }
 
 export default async function CameraDetailPage({ params }) {
-  const camera = await getCameraBySlug(params.slug);
+  const { slug } = await params;
+  const camera = await getCameraBySlug(slug);
 
   if (!camera) {
     notFound();
@@ -66,8 +68,26 @@ export default async function CameraDetailPage({ params }) {
                   <p className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">Lowest Online Price</p>
                   <div className="text-4xl font-black text-slate-900">₹{camera.price.toLocaleString('en-IN')}</div>
                   <div className="flex gap-2 mt-3">
-                    <span className="text-xs font-bold text-[#FF9900] bg-orange-100/50 px-2.5 py-1 rounded">Amazon</span>
-                    <span className="text-xs font-bold text-[#2874F0] bg-blue-100/50 px-2.5 py-1 rounded">Flipkart</span>
+                    {camera.amazon_price && (
+                      <a 
+                        href={`https://www.amazon.in/s?k=${encodeURIComponent(camera.name)}&tag=camerawale-21`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold text-[#FF9900] bg-orange-100/50 hover:bg-orange-100 px-2.5 py-1 rounded transition-colors"
+                      >
+                        Amazon: ₹{camera.amazon_price.toLocaleString('en-IN')}
+                      </a>
+                    )}
+                    {camera.flipkart_price && (
+                      <a 
+                        href={`https://www.flipkart.com/search?q=${encodeURIComponent(camera.name)}&affid=camerawale`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold text-[#2874F0] bg-blue-100/50 hover:bg-blue-100 px-2.5 py-1 rounded transition-colors"
+                      >
+                        Flipkart: ₹{camera.flipkart_price.toLocaleString('en-IN')}
+                      </a>
+                    )}
                   </div>
                 </div>
                 <div className="w-full sm:w-auto flex-shrink-0">
@@ -96,6 +116,58 @@ export default async function CameraDetailPage({ params }) {
               ))}
             </div>
 
+          </div>
+        </div>
+
+        {/* Reviews Section */}
+        <div className="mt-16 pt-12 border-t border-gray-100">
+          <div className="flex flex-col lg:flex-row gap-12">
+            <div className="lg:w-1/3">
+              <h3 className="text-2xl font-extrabold text-slate-900 mb-6">User Reviews</h3>
+              <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 mb-8">
+                <div className="flex items-end gap-3 mb-2">
+                  <span className="text-5xl font-black text-slate-900">{camera.rating}</span>
+                  <div className="flex mb-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star key={star} className={`w-5 h-5 ${star <= Math.round(camera.rating) ? 'fill-orange-500 text-orange-500' : 'text-gray-300'}`} />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-gray-500 font-medium">Based on {camera.reviewCount} reviews</p>
+              </div>
+
+              <ReviewForm cameraId={camera.id} />
+            </div>
+
+            <div className="lg:w-2/3 space-y-6">
+              {camera.reviews && camera.reviews.length > 0 ? (
+                camera.reviews.map((review) => (
+                  <div key={review.id} className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star key={star} className={`w-4 h-4 ${star <= review.rating ? 'fill-orange-500 text-orange-500' : 'text-gray-200'}`} />
+                        ))}
+                      </div>
+                      <span className="text-xs font-bold text-gray-400">
+                        {new Date(review.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                    {review.comment ? (
+                      <p className="text-gray-700 font-medium">{review.comment}</p>
+                    ) : (
+                      <p className="text-gray-400 italic text-sm">No comment provided.</p>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <div className="bg-gray-50 border border-gray-100 rounded-2xl p-12 text-center">
+                  <Star className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                  <h4 className="text-lg font-bold text-slate-900 mb-2">No reviews yet</h4>
+                  <p className="text-gray-500">Be the first to share your experience with the {camera.name}!</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

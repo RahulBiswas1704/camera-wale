@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { getUserFavorites } from '@/data/cameras'
@@ -71,6 +72,3 @@ export default async function ProfilePage() {
     </div>
   )
 }
-
-// I need to import Link
-import Link from 'next/link'

@@ -3,7 +3,8 @@ import { getCameraById } from '@/data/cameras';
 import { notFound } from 'next/navigation';
 
 export default async function EditCameraPage({ params }) {
-  const camera = await getCameraById(params.id);
+  const { id } = await params;
+  const camera = await getCameraById(id);
 
   if (!camera) {
     notFound();

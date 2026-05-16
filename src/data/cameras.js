@@ -1,4 +1,3 @@
-import { supabase } from '@/lib/supabase';
 import { createClient as createServerClient } from '@/utils/supabase/server';
 
 // Local Fallback Data
@@ -27,12 +26,43 @@ export const fallbackCameras = [
   }
 ];
 
+export async function getCameraReviews(cameraId) {
+  try {
+    const supabaseServer = await createServerClient();
+    const { data: reviews, error } = await supabaseServer
+      .from('reviews')
+      .select('*')
+      .eq('camera_id', cameraId)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return reviews || [];
+  } catch (err) {
+    console.error('Fetch reviews failed:', err.message);
+    return [];
+  }
+}
+
+export async function getCamerasReviewsAggregated() {
+  try {
+    const supabaseServer = await createServerClient();
+    const { data: reviews, error } = await supabaseServer
+      .from('reviews')
+      .select('camera_id, rating');
+
+    if (error) throw error;
+    return reviews || [];
+  } catch (err) {
+    return [];
+  }
+}
+
 export async function getCameras() {
   try {
     const supabaseServer = await createServerClient();
     const { data: { user } } = await supabaseServer.auth.getUser();
 
-    const { data: cameras, error } = await supabase.from('cameras').select('*');
+    const { data: cameras, error } = await supabaseServer.from('cameras').select('*');
     if (error) throw error;
 
     if (user && cameras) {
@@ -43,14 +73,35 @@ export async function getCameras() {
         .eq('user_id', user.id);
       
       const favoriteIds = new Set(favorites?.map(f => f.camera_id) || []);
-      
-      return cameras.map(camera => ({
-        ...camera,
-        isFavorited: favoriteIds.has(camera.id)
-      }));
+      const reviews = await getCamerasReviewsAggregated();
+
+      return cameras.map(camera => {
+        const cameraReviews = reviews.filter(r => r.camera_id === camera.id);
+        const avgRating = cameraReviews.length > 0 
+          ? (cameraReviews.reduce((sum, r) => sum + r.rating, 0) / cameraReviews.length).toFixed(1)
+          : 4.8; // Fallback rating
+
+        return {
+          ...camera,
+          isFavorited: favoriteIds.has(camera.id),
+          rating: parseFloat(avgRating),
+          reviewCount: cameraReviews.length
+        };
+      });
     }
 
-    return cameras || fallbackCameras;
+    const reviews = await getCamerasReviewsAggregated();
+    return cameras.map(camera => {
+      const cameraReviews = reviews.filter(r => r.camera_id === camera.id);
+      const avgRating = cameraReviews.length > 0 
+        ? (cameraReviews.reduce((sum, r) => sum + r.rating, 0) / cameraReviews.length).toFixed(1)
+        : 4.8;
+      return {
+        ...camera,
+        rating: parseFloat(avgRating),
+        reviewCount: cameraReviews.length
+      };
+    }) || fallbackCameras;
   } catch (err) {
     console.error('Fetch cameras failed:', err.message);
     return fallbackCameras;
@@ -62,7 +113,7 @@ export async function getCameraById(id) {
     const supabaseServer = await createServerClient();
     const { data: { user } } = await supabaseServer.auth.getUser();
 
-    const { data: camera, error } = await supabase.from('cameras').select('*').eq('id', id).single();
+    const { data: camera, error } = await supabaseServer.from('cameras').select('*').eq('id', id).single();
     if (error) throw error;
 
     if (user && camera) {
@@ -73,10 +124,31 @@ export async function getCameraById(id) {
         .eq('camera_id', id)
         .single();
       
-      return { ...camera, isFavorited: !!favorite };
+      const reviews = await getCameraReviews(id);
+      const avgRating = reviews.length > 0 
+        ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+        : 4.8;
+
+      return { 
+        ...camera, 
+        isFavorited: !!favorite,
+        rating: parseFloat(avgRating),
+        reviewCount: reviews.length,
+        reviews
+      };
     }
 
-    return camera;
+    const reviews = await getCameraReviews(id);
+    const avgRating = reviews.length > 0 
+      ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+      : 4.8;
+
+    return {
+      ...camera,
+      rating: parseFloat(avgRating),
+      reviewCount: reviews.length,
+      reviews
+    };
   } catch (err) {
     return fallbackCameras.find(c => c.id === id);
   }
@@ -87,7 +159,7 @@ export async function getCameraBySlug(slug) {
     const supabaseServer = await createServerClient();
     const { data: { user } } = await supabaseServer.auth.getUser();
 
-    const { data: camera, error } = await supabase.from('cameras').select('*').eq('slug', slug).single();
+    const { data: camera, error } = await supabaseServer.from('cameras').select('*').eq('slug', slug).single();
     if (error) throw error;
 
     if (user && camera) {
@@ -98,10 +170,31 @@ export async function getCameraBySlug(slug) {
         .eq('camera_id', camera.id)
         .single();
       
-      return { ...camera, isFavorited: !!favorite };
+      const reviews = await getCameraReviews(camera.id);
+      const avgRating = reviews.length > 0 
+        ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+        : 4.8;
+
+      return { 
+        ...camera, 
+        isFavorited: !!favorite,
+        rating: parseFloat(avgRating),
+        reviewCount: reviews.length,
+        reviews
+      };
     }
 
-    return camera;
+    const reviews = await getCameraReviews(camera.id);
+    const avgRating = reviews.length > 0 
+      ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+      : 4.8;
+
+    return {
+      ...camera,
+      rating: parseFloat(avgRating),
+      reviewCount: reviews.length,
+      reviews
+    };
   } catch (err) {
     return fallbackCameras.find(c => c.slug === slug);
   }

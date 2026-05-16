@@ -24,7 +24,7 @@ export default function CameraCard({ camera }) {
                 {camera.name}
               </h3>
               <div className="flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-50 px-2 py-1 rounded-lg shrink-0">
-                <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" /> 4.8
+                <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" /> {camera.rating || 4.8}
               </div>
             </div>
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
