@@ -27,6 +27,22 @@ export default function LoginPage() {
         <div className="bg-white py-8 px-4 shadow-xl sm:rounded-2xl sm:px-10 border border-gray-100">
           <form action={formAction} className="space-y-6">
             <div>
+              <label htmlFor="adminId" className="block text-sm font-bold text-gray-700">
+                Admin ID
+              </label>
+              <div className="mt-2 relative rounded-md shadow-sm">
+                <input
+                  id="adminId"
+                  name="adminId"
+                  type="text"
+                  required
+                  className="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-orange-500 focus:border-orange-500 sm:text-sm font-medium"
+                  placeholder="Enter your admin ID"
+                />
+              </div>
+            </div>
+
+            <div>
               <label htmlFor="password" className="block text-sm font-bold text-gray-700">
                 Secret Password
               </label>

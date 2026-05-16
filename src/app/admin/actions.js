@@ -6,10 +6,13 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 export async function login(prevState, formData) {
+  const adminId = formData.get('adminId');
   const password = formData.get('password');
-  const adminPassword = process.env.ADMIN_PASSWORD;
+  
+  const targetId = process.env.ADMIN_ID;
+  const targetPassword = process.env.ADMIN_PASSWORD;
 
-  if (password === adminPassword) {
+  if (adminId === targetId && password === targetPassword) {
     // Set a secure httpOnly cookie
     (await cookies()).set('admin_session', 'authenticated', {
       httpOnly: true,
@@ -19,7 +22,7 @@ export async function login(prevState, formData) {
     });
     redirect('/admin');
   } else {
-    return { error: 'Invalid password' };
+    return { error: 'Invalid credentials' };
   }
 }
 
