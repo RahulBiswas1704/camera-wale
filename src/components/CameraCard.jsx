@@ -32,12 +32,27 @@ export default function CameraCard({ camera }) {
             </p>
           </div>
           
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mb-2">
             {camera.badges?.slice(0, 2).map((badge) => (
               <span key={badge} className="px-2.5 py-1 bg-orange-50 text-orange-600 text-[10px] font-black uppercase tracking-tighter rounded-md border border-orange-100">
                 {badge}
               </span>
             ))}
+          </div>
+
+          <div className="flex items-center gap-3 text-xs font-bold text-slate-500 mb-2">
+            {camera.sensor_type && (
+              <span className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                {camera.sensor_type}
+              </span>
+            )}
+            {camera.megapixels && (
+              <span className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                {camera.megapixels} MP
+              </span>
+            )}
           </div>
           
           <div className="pt-4 border-t border-slate-50 flex justify-between items-center">

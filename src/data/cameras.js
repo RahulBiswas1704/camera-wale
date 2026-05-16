@@ -11,7 +11,11 @@ export const fallbackCameras = [
     image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=2000&auto=format&fit=crop',
     price: 214990,
     badges: ['Top Rated', 'Best Hybrid'],
-    specs: { sensorSize: 'Full Frame', megapixels: 33, videoResolution: '4K 60fps (Crop)', autofocusPoints: 759, batteryLife: 580 }
+    sensor_type: 'Full Frame',
+    megapixels: 33,
+    video_res: '4K 60fps (Crop)',
+    lens_mount: 'E-Mount',
+    specs: { autofocusPoints: 759, batteryLife: 580 }
   },
   {
     id: 'canon-r6-mark-ii',
@@ -22,7 +26,11 @@ export const fallbackCameras = [
     image: 'https://images.unsplash.com/photo-1502982720700-baf97d4220a8?q=80&w=2070&auto=format&fit=crop',
     price: 209990,
     badges: ['Speed King'],
-    specs: { sensorSize: 'Full Frame', megapixels: 24.2, videoResolution: '4K 60fps (Uncropped)', autofocusPoints: 1053, batteryLife: 450 }
+    sensor_type: 'Full Frame',
+    megapixels: 24.2,
+    video_res: '4K 60fps (Uncropped)',
+    lens_mount: 'RF-Mount',
+    specs: { autofocusPoints: 1053, batteryLife: 450 }
   }
 ];
 

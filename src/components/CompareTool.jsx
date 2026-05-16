@@ -15,18 +15,41 @@ export default function CompareTool({ cameras, initialCam1Slug, initialCam2Slug 
     router.push(`/compare/${c1Slug}-vs-${c2Slug}`);
   };
 
-  // Helper to determine the winner (simple logic for MVP)
+  // Helper to determine the winner
   const isWinner = (spec, val1, val2) => {
+    if (val1 === undefined || val2 === undefined) return 0;
+    
+    // Numeric comparisons
     if (spec === 'megapixels' || spec === 'autofocusPoints' || spec === 'batteryLife') {
-      return val1 > val2 ? 1 : val1 < val2 ? 2 : 0;
+      const num1 = parseFloat(val1) || 0;
+      const num2 = parseFloat(val2) || 0;
+      return num1 > num2 ? 1 : num1 < num2 ? 2 : 0;
     }
-    // For video resolution, we'll just check if it contains 6K or Uncropped as a dummy rule
-    if (spec === 'videoResolution') {
-      if (val1.includes('Uncropped') || val1.includes('6K')) return 1;
-      if (val2.includes('Uncropped') || val2.includes('6K')) return 2;
+    // Video resolution dummy logic
+    if (spec === 'videoResolution' || spec === 'video_res') {
+      const v1 = String(val1).toUpperCase();
+      const v2 = String(val2).toUpperCase();
+      if ((v1.includes('8K') && !v2.includes('8K')) || (v1.includes('UNCROPPED') && !v2.includes('UNCROPPED'))) return 1;
+      if ((v2.includes('8K') && !v1.includes('8K')) || (v2.includes('UNCROPPED') && !v1.includes('UNCROPPED'))) return 2;
     }
     return 0;
   };
+
+  // Build a unified specs array for the comparison table
+  // This combines the new top-level database columns with any remaining JSON specs
+  const getUnifiedSpecs = (camera) => {
+    return {
+      sensor_type: camera.sensor_type || 'N/A',
+      megapixels: camera.megapixels || 'N/A',
+      video_res: camera.video_res || 'N/A',
+      lens_mount: camera.lens_mount || 'N/A',
+      ...camera.specs // Spread any remaining JSON specs (e.g. autofocusPoints, batteryLife)
+    };
+  };
+
+  const cam1Unified = getUnifiedSpecs(cam1);
+  const cam2Unified = getUnifiedSpecs(cam2);
+  const allSpecKeys = Array.from(new Set([...Object.keys(cam1Unified), ...Object.keys(cam2Unified)]));
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
@@ -93,7 +116,7 @@ export default function CompareTool({ cameras, initialCam1Slug, initialCam2Slug 
           <div className="w-full bg-gray-50 rounded-2xl p-5 border border-gray-100 mt-auto flex flex-col justify-between h-full">
             <div className="text-center mb-5">
               <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Lowest Online Price</p>
-              <div className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">₹{cam1.price.toLocaleString('en-IN')}</div>
+              <div className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">₹{cam1.price?.toLocaleString('en-IN')}</div>
             </div>
             
             <div className="mt-auto pt-2">
@@ -128,7 +151,7 @@ export default function CompareTool({ cameras, initialCam1Slug, initialCam2Slug 
           <div className="w-full bg-gray-50 rounded-2xl p-5 border border-gray-100 mt-auto flex flex-col justify-between h-full">
             <div className="text-center mb-5">
               <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Lowest Online Price</p>
-              <div className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">₹{cam2.price.toLocaleString('en-IN')}</div>
+              <div className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">₹{cam2.price?.toLocaleString('en-IN')}</div>
             </div>
             
             <div className="mt-auto pt-2">
@@ -155,11 +178,13 @@ export default function CompareTool({ cameras, initialCam1Slug, initialCam2Slug 
               </tr>
             </thead>
             <tbody className="text-gray-700 text-base font-medium">
-              {Object.keys(cam1.specs).map((specKey) => {
-                const winner = isWinner(specKey, cam1.specs[specKey], cam2.specs[specKey]);
+              {allSpecKeys.map((specKey) => {
+                const val1 = cam1Unified[specKey];
+                const val2 = cam2Unified[specKey];
+                const winner = isWinner(specKey, val1, val2);
                 
-                // Format label
-                const label = specKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                // Format label (e.g. sensor_type -> Sensor Type)
+                const label = specKey.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
                 
                 return (
                   <tr key={specKey} className="border-b border-gray-100 row-hover transition-colors">
@@ -170,7 +195,7 @@ export default function CompareTool({ cameras, initialCam1Slug, initialCam2Slug 
                       {winner === 1 && <div className="absolute inset-y-0 left-0 w-1 bg-green-500"></div>}
                       <div className="flex items-center justify-center gap-2">
                         <span className={winner === 1 ? "font-extrabold text-green-700" : ""}>
-                          {cam1.specs[specKey]}
+                          {val1}
                         </span>
                         {winner === 1 && <CheckCircle2 className="w-5 h-5 text-green-500" />}
                       </div>
@@ -181,7 +206,7 @@ export default function CompareTool({ cameras, initialCam1Slug, initialCam2Slug 
                       {winner === 2 && <div className="absolute inset-y-0 left-0 w-1 bg-green-500"></div>}
                       <div className="flex items-center justify-center gap-2">
                         <span className={winner === 2 ? "font-extrabold text-green-700" : ""}>
-                          {cam2.specs[specKey]}
+                          {val2}
                         </span>
                         {winner === 2 && <CheckCircle2 className="w-5 h-5 text-green-500" />}
                       </div>
